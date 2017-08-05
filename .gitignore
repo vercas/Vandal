@@ -1,5 +1,6 @@
 /.garbage/
 /err.txt
+
 /libtickit-0.1/.libs
 /libtickit-0.1/examples/.libs/
 /libtickit-0.1/examples/*.o
@@ -9,4 +10,9 @@
 /libtickit-0.1/examples/demo-termctl
 /libtickit-0.1/examples/demo-timer
 /libtickit-0.1/examples/demo-xterm256
+/libtickit-0.1/src/.libs
+/libtickit-0.1/src/*.o
+/libtickit-0.1/src/*.lo
+
+
 
