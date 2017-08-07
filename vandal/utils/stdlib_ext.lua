@@ -217,6 +217,58 @@ function string.iteratesplit(s, pattern, plain, n)
     end
 end
 
+local prefixes = { ["-"] = true, ["~"] = true, ["+"] = true }
+
+function string.parsenumber(str)
+    local num, prf, start = tonumber(str)
+    if num then return num end
+
+    prf = str:sub(1, 1)
+    if prefixes[prf] then start = 2 else start = 1 prf = nil end
+
+    if str:sub(start, start) ~= "0" or #str < start + 2 then
+        return nil, "Unknown number parsing failure"
+    end
+
+    local typ = str:sub(start + 1, start + 1)
+    num = 0
+
+    if typ == "x" then
+        num = tonumber(str:sub(start + 2), 16)
+    elseif typ == "o" then
+        for i = start + 2, #str do
+            local d = str:sub(i, i):byte() - 48
+
+            if d < 0 or d > 7 then
+                return nil, "Octal digit out of range at position " .. i
+            end
+
+            num = bit.bor(bit.lshift(num, 3), d)
+        end
+    elseif typ == "b" then
+        for i = start + 2, #str do
+            local d = str:sub(i, i):byte() - 48
+            num = bit.lshift(num, 1)
+
+            if d == 1 then
+                num = bit.bor(num, 1)
+            elseif d ~= 0 then
+                return nil, "Binary digit out of range at position " .. i
+            end
+        end
+    else
+        return nil, "Unknown number base prefix"
+    end
+
+    if prf == "-" then
+        return -num
+    elseif prf == "~" then
+        return bit.bnot(num)
+    end
+
+    return num
+end
+
 function math.clamp(min, val, max)
     if val < min then return min end
     if val > max then return max end
