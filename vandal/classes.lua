@@ -148,7 +148,7 @@ local function makePropFunc(prop, name, base)
                 end
             end
         else
-            fnc = function(self, write, errlvl)
+            fnc = function(self, write, _val, errlvl)
                 if not errlvl then errlvl = 2 else errlvl = errlvl + 1 end
 
                 if write then
