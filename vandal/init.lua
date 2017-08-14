@@ -173,6 +173,7 @@ function vandal.run()
     vandal.ui_kit = "tickit"
     vandal.colorspace = "xterm"
     vandal.utf8 = true
+    vandal.debug = true
 
     local res = vcall(require, "vandal/ui")
 

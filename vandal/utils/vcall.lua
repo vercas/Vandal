@@ -39,6 +39,8 @@
 if not vandal.utils then vandal.utils = { } end
 if vandal.utils.vcall then error "wut?" end
 
+local types = require "vandal/utils/types"
+
 local function prettyString(val)
     if type(val) == "string" then
         return string.format("%q", val)
@@ -54,7 +56,7 @@ local function printTable(t, append, indent, done)
         append(myIndent)
         append(prettyString(key))
 
-        if typeEx(value) == "table" and not done[value] then
+        if types.get(value) == "table" and not done[value] then
             done[value] = true
 
             local ts = tostring(value)
@@ -100,7 +102,7 @@ local function printEndData(self, indent, out)
         append(tostring(i))
         append "\t"
 
-        if vandal.Verbose or vandal.Debug then
+        if vandal.verbose or vandal.debug then
             function appendSource()
                 append "\n"
                 append(myIndent)
@@ -203,7 +205,7 @@ local function printEndData(self, indent, out)
 
         --  Now, upvalues, locals, parameters...
 
-        if info.what ~= "C" and (vandal.Verbose or vandal.Debug) then
+        if info.what ~= "C" and (vandal.verbose or vandal.debug) then
             --  Both main chunk and Lua functions can haz these.
 
             append(myIndent)
@@ -239,7 +241,7 @@ local function printEndData(self, indent, out)
                 append(extraIndent)
                 append(prettyString(key))
 
-                if typeEx(value) == "table" and not done[value] then
+                if types.get(value) == "table" and not done[value] then
                     done[value] = true
 
                     local ts = tostring(value)
@@ -268,7 +270,7 @@ local function printEndData(self, indent, out)
                     append(extraIndent)
                     append(prettyString(key))
 
-                    if typeEx(value) == "table" and not done[value] then
+                    if types.get(value) == "table" and not done[value] then
                         done[value] = true
 
                         local ts = tostring(value)
